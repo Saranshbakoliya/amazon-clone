@@ -1,0 +1,3 @@
+﻿Capture session started
+Build pass: Vite production build succeeded
+Deployment attempt: Vercel requires login credentials in this environment.
