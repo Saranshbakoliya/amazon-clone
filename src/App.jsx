@@ -38,18 +38,7 @@ const heroSlides = [
 ]
 
 const products = [
-  {
-    id: 1,
-    title: 'Echo Dot (5th Gen) Smart Speaker',
-    category: 'Electronics',
-    rating: 4.8,
-    reviews: 18423,
-    price: 39.99,
-    oldPrice: 59.99,
-    badge: 'Best seller',
-    image:
-      'https://images.unsplash.com/photo-1543512214-1265e2c5f6a3?auto=format&fit=crop&w=900&q=80',
-  },
+ 
   {
     id: 2,
     title: 'Apple AirPods Pro (2nd Gen)',
