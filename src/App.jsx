@@ -243,17 +243,19 @@ function App() {
         </div>
 
         <div className="subnav">
-          <button type="button" className="menu-link">☰ All</button>
-          {['Today&apos;s Deals', 'Customer Service', 'Registry', 'Gift Cards', 'Sell'].map(
-            (item) => (
-              <button key={item} type="button" className="menu-link">
-                {item}
-              </button>
-            ),
-          )}
-          <button type="button" className="menu-link promo-link">
-            Shop deals with no order minimum
-          </button>
+          <div className="subnav-inner">
+            <button type="button" className="menu-link">☰ All</button>
+            {['Today&apos;s Deals', 'Customer Service', 'Registry', 'Gift Cards', 'Sell'].map(
+              (item) => (
+                <button key={item} type="button" className="menu-link">
+                  {item}
+                </button>
+              ),
+            )}
+            <button type="button" className="menu-link promo-link">
+              Shop deals with no order minimum
+            </button>
+          </div>
         </div>
       </header>
 
