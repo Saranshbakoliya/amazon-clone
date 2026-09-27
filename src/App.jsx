@@ -100,7 +100,7 @@ const products = [
   },
   {
     id: 6,
-    title: 'Women\'s Everyday Crew Tee',
+    title: "Women's Everyday Crew Tee",
     category: 'Fashion',
     rating: 4.5,
     reviews: 993,
@@ -144,7 +144,7 @@ const products = [
     oldPrice: 999.99,
     badge: 'New arrival',
     image:
-      'https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&w=900&q=80',
   },
   {
     id: 10,
@@ -192,7 +192,7 @@ const products = [
     oldPrice: 1799.99,
     badge: 'Business',
     image:
-      'https://images.unsplash.com/photo-1552820728-8ac41f1ce891?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=900&q=80',
   },
   {
     id: 14,
@@ -216,11 +216,11 @@ const products = [
     oldPrice: 499.99,
     badge: 'Best seller',
     image:
-      'https://images.unsplash.com/photo-1505470468204-1ce149d659bf?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=900&q=80',
   },
   {
     id: 16,
-    title: 'Men\'s Premium Polo Shirt',
+    title: "Men's Premium Polo Shirt",
     category: 'Fashion',
     rating: 4.4,
     reviews: 542,
@@ -255,10 +255,13 @@ function App() {
   const [selectedProduct, setSelectedProduct] = useState(null)
   const [userName, setUserName] = useState('Guest')
   const [theme, setTheme] = useState('dark')
-  const [currentPath, setCurrentPath] = useState(() => (typeof window !== 'undefined' ? window.location.pathname : '/'))
+  const [currentPath, setCurrentPath] = useState(() =>
+    typeof window !== 'undefined' ? window.location.pathname : '/',
+  )
 
   const navigateTo = (path) => {
     setCurrentPath(path)
+
     if (typeof window !== 'undefined') {
       window.history.pushState({}, '', path)
     }
@@ -270,6 +273,7 @@ function App() {
     }
 
     window.addEventListener('popstate', handlePopState)
+
     return () => window.removeEventListener('popstate', handlePopState)
   }, [])
 
@@ -287,14 +291,20 @@ function App() {
           .toLowerCase()
           .includes(searchTerm.toLowerCase()),
       )
+
       return result
     }
 
     const selectedCategory = activeCategory || DEFAULT_CATEGORY
+
     return result.filter((product) => product.category === selectedCategory)
   }, [searchTerm, activeCategory])
 
-  const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0)
+  const subtotal = cart.reduce(
+    (sum, item) => sum + item.price * item.qty,
+    0,
+  )
+
   const shipping = cart.length ? (subtotal > 35 ? 0 : 9.99) : 0
   const tax = subtotal * 0.08
   const total = subtotal + shipping + tax
@@ -304,14 +314,21 @@ function App() {
 
   const addToCart = (product) => {
     setCart((currentCart) => {
-      const existingItem = currentCart.find((item) => item.id === product.id)
+      const existingItem = currentCart.find(
+        (item) => item.id === product.id,
+      )
+
       if (existingItem) {
         return currentCart.map((item) =>
-          item.id === product.id ? { ...item, qty: item.qty + 1 } : item,
+          item.id === product.id
+            ? { ...item, qty: item.qty + 1 }
+            : item,
         )
       }
+
       return [...currentCart, { ...product, qty: 1 }]
     })
+
     setCheckoutStage('cart')
   }
 
@@ -319,7 +336,9 @@ function App() {
     setCart((currentCart) =>
       currentCart
         .map((item) =>
-          item.id === id ? { ...item, qty: Math.max(0, item.qty + delta) } : item,
+          item.id === id
+            ? { ...item, qty: Math.max(0, item.qty + delta) }
+            : item,
         )
         .filter((item) => item.qty > 0),
     )
@@ -331,6 +350,7 @@ function App() {
       setAuthMode('signin')
       return
     }
+
     setCheckoutStage('checkout')
   }
 
@@ -373,41 +393,62 @@ function App() {
     <aside className="summary-panel">
       <div className="summary-box">
         <h3>Order summary</h3>
+
         {checkoutStage === 'confirmation' ? (
           <div className="confirmation-box">
             <div className="checkmark">✓</div>
             <h4>Order placed!</h4>
-            <p>Your delivery is on the way. Tracking number: AMZ-894221</p>
+            <p>
+              Your delivery is on the way. Tracking number: AMZ-894221
+            </p>
           </div>
         ) : checkoutStage === 'checkout' ? (
           <>
             <div className="checkout-box">
               <label>
                 Delivery address
-                <input type="text" defaultValue="124 Cedar Street, Seattle, WA" />
+                <input
+                  type="text"
+                  defaultValue="124 Cedar Street, Seattle, WA"
+                />
               </label>
+
               <label>
                 Payment method
-                <input type="text" defaultValue="Visa •••• 2456" />
+                <input
+                  type="text"
+                  defaultValue="Visa •••• 2456"
+                />
               </label>
             </div>
+
             <div className="totals-row">
               <span>Subtotal</span>
               <strong>{formatCurrency(subtotal)}</strong>
             </div>
+
             <div className="totals-row">
               <span>Shipping</span>
-              <strong>{shipping === 0 ? 'Free' : formatCurrency(shipping)}</strong>
+              <strong>
+                {shipping === 0 ? 'Free' : formatCurrency(shipping)}
+              </strong>
             </div>
+
             <div className="totals-row">
               <span>Tax</span>
               <strong>{formatCurrency(tax)}</strong>
             </div>
+
             <div className="totals-row total-row">
               <span>Total</span>
               <strong>{formatCurrency(total)}</strong>
             </div>
-            <button type="button" className="primary-button full-width" onClick={handlePlaceOrder}>
+
+            <button
+              type="button"
+              className="primary-button full-width"
+              onClick={handlePlaceOrder}
+            >
               Place your order
             </button>
           </>
@@ -417,20 +458,32 @@ function App() {
               <span>Subtotal</span>
               <strong>{formatCurrency(subtotal)}</strong>
             </div>
+
             <div className="totals-row">
               <span>Shipping</span>
-              <strong>{shipping === 0 ? 'Free' : formatCurrency(shipping)}</strong>
+              <strong>
+                {shipping === 0 ? 'Free' : formatCurrency(shipping)}
+              </strong>
             </div>
+
             <div className="totals-row">
               <span>Tax</span>
               <strong>{formatCurrency(tax)}</strong>
             </div>
+
             <div className="totals-row total-row">
               <span>Total</span>
               <strong>{formatCurrency(total)}</strong>
             </div>
-            <button type="button" className="primary-button full-width" onClick={handleProceed}>
-              {signedIn ? 'Continue to checkout' : 'Sign in to checkout'}
+
+            <button
+              type="button"
+              className="primary-button full-width"
+              onClick={handleProceed}
+            >
+              {signedIn
+                ? 'Continue to checkout'
+                : 'Sign in to checkout'}
             </button>
           </>
         )}
@@ -451,8 +504,10 @@ function App() {
             >
               amazon
             </button>
+
             <div className="location-chip">
               <span className="pin">⌖</span>
+
               <div>
                 <small>Deliver to</small>
                 <strong>Seattle 98101</strong>
@@ -460,25 +515,51 @@ function App() {
             </div>
           </div>
 
-          <nav className="utility-nav" aria-label="Account and shopping links">
-            <button type="button" className="nav-button" onClick={() => openAuth(signedIn ? 'account' : 'signin')}>
+          <nav
+            className="utility-nav"
+            aria-label="Account and shopping links"
+          >
+            <button
+              type="button"
+              className="nav-button"
+              onClick={() =>
+                openAuth(signedIn ? 'account' : 'signin')
+              }
+            >
               <small>Hello, {userName}</small>
-              <strong>{signedIn ? 'Account & Lists' : 'Sign in'}</strong>
+              <strong>
+                {signedIn ? 'Account & Lists' : 'Sign in'}
+              </strong>
             </button>
+
             <button type="button" className="nav-button">
               <small>Returns</small>
               <strong>& Orders</strong>
             </button>
-            <button type="button" className="nav-button cart-button" onClick={() => navigateTo('/cart')}>
+
+            <button
+              type="button"
+              className="nav-button cart-button"
+              onClick={() => navigateTo('/cart')}
+            >
               <span className="cart-icon">🛒</span>
               <strong>Cart</strong>
-              <span className="cart-count">{cart.reduce((sum, item) => sum + item.qty, 0)}</span>
+              <span className="cart-count">
+                {cart.reduce((sum, item) => sum + item.qty, 0)}
+              </span>
             </button>
+
             <button
               type="button"
               className="nav-button theme-toggle"
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              title={theme === 'dark' ? 'Switch to Light Theme' : 'Switch to Dark Theme'}
+              onClick={() =>
+                setTheme(theme === 'dark' ? 'light' : 'dark')
+              }
+              title={
+                theme === 'dark'
+                  ? 'Switch to Light Theme'
+                  : 'Switch to Dark Theme'
+              }
             >
               {theme === 'dark' ? '☀️' : '🌙'}
             </button>
@@ -491,7 +572,11 @@ function App() {
           <div className="cart-panel">
             <div className="section-header compact-header">
               <h2>Shopping Cart</h2>
-              <button type="button" onClick={() => navigateTo('/')}>
+
+              <button
+                type="button"
+                onClick={() => navigateTo('/')}
+              >
                 Continue shopping
               </button>
             </div>
@@ -500,24 +585,51 @@ function App() {
               cart.map((item) => (
                 <div key={item.id} className="cart-item">
                   <img src={item.image} alt={item.title} />
+
                   <div className="cart-copy">
                     <h3>{item.title}</h3>
+
                     <div className="rating-row">
                       <span>★★★★★</span>
                       <small>{item.rating}</small>
                     </div>
-                    <p className="item-price">{formatCurrency(item.price)}</p>
+
+                    <p className="item-price">
+                      {formatCurrency(item.price)}
+                    </p>
+
                     <div className="qty-row">
-                      <button type="button" onClick={() => changeQuantity(item.id, -1)}>-</button>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          changeQuantity(item.id, -1)
+                        }
+                      >
+                        -
+                      </button>
+
                       <span>{item.qty}</span>
-                      <button type="button" onClick={() => changeQuantity(item.id, 1)}>+</button>
+
+                      <button
+                        type="button"
+                        onClick={() =>
+                          changeQuantity(item.id, 1)
+                        }
+                      >
+                        +
+                      </button>
                     </div>
                   </div>
-                  <div className="item-total">{formatCurrency(item.price * item.qty)}</div>
+
+                  <div className="item-total">
+                    {formatCurrency(item.price * item.qty)}
+                  </div>
                 </div>
               ))
             ) : (
-              <div className="empty-state">Your cart is empty.</div>
+              <div className="empty-state">
+                Your cart is empty.
+              </div>
             )}
           </div>
 
@@ -532,9 +644,13 @@ function App() {
       <header className="topbar">
         <div className="topbar-main">
           <div className="brand-wrap">
-            <div className="brand-logo" aria-label="Amazon logo">amazon</div>
+            <div className="brand-logo" aria-label="Amazon logo">
+              amazon
+            </div>
+
             <div className="location-chip">
               <span className="pin">⌖</span>
+
               <div>
                 <small>Deliver to</small>
                 <strong>Seattle 98101</strong>
@@ -542,38 +658,71 @@ function App() {
             </div>
           </div>
 
-          <label className="search-box" aria-label="Search product catalog">
+          <label
+            className="search-box"
+            aria-label="Search product catalog"
+          >
             <span className="search-caret">All</span>
+
             <input
               type="text"
               value={searchTerm}
-              onChange={(event) => setSearchTerm(event.target.value)}
+              onChange={(event) =>
+                setSearchTerm(event.target.value)
+              }
               placeholder="Search Amazon"
             />
+
             <button type="button" className="search-button">
               ⌕
             </button>
           </label>
 
-          <nav className="utility-nav" aria-label="Account and shopping links">
-            <button type="button" className="nav-button" onClick={() => openAuth(signedIn ? 'account' : 'signin')}>
+          <nav
+            className="utility-nav"
+            aria-label="Account and shopping links"
+          >
+            <button
+              type="button"
+              className="nav-button"
+              onClick={() =>
+                openAuth(signedIn ? 'account' : 'signin')
+              }
+            >
               <small>Hello, {userName}</small>
-              <strong>{signedIn ? 'Account & Lists' : 'Sign in'}</strong>
+              <strong>
+                {signedIn ? 'Account & Lists' : 'Sign in'}
+              </strong>
             </button>
+
             <button type="button" className="nav-button">
               <small>Returns</small>
               <strong>& Orders</strong>
             </button>
-            <button type="button" className="nav-button cart-button" onClick={scrollToCart}>
+
+            <button
+              type="button"
+              className="nav-button cart-button"
+              onClick={scrollToCart}
+            >
               <span className="cart-icon">🛒</span>
               <strong>Cart</strong>
-              <span className="cart-count">{cart.reduce((sum, item) => sum + item.qty, 0)}</span>
+              <span className="cart-count">
+                {cart.reduce((sum, item) => sum + item.qty, 0)}
+              </span>
             </button>
+
             <button
               type="button"
               className="nav-button theme-toggle"
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              title={theme === 'dark' ? 'Switch to Light Theme' : 'Switch to Dark Theme'}
+              onClick={() =>
+                setTheme(theme === 'dark' ? 'light' : 'dark')
+              }
+              title={
+                theme === 'dark'
+                  ? 'Switch to Light Theme'
+                  : 'Switch to Dark Theme'
+              }
             >
               {theme === 'dark' ? '☀️' : '🌙'}
             </button>
@@ -582,15 +731,29 @@ function App() {
 
         <div className="subnav">
           <div className="subnav-inner">
-            <button type="button" className="menu-link">☰ All</button>
-            {['Customer Service', 'Registry', 'Gift Cards', 'Sell'].map(
-              (item) => (
-                <button key={item} type="button" className="menu-link">
-                  {item}
-                </button>
-              ),
-            )}
-            <button type="button" className="menu-link promo-link">
+            <button type="button" className="menu-link">
+              ☰ All
+            </button>
+
+            {[
+              'Customer Service',
+              'Registry',
+              'Gift Cards',
+              'Sell',
+            ].map((item) => (
+              <button
+                key={item}
+                type="button"
+                className="menu-link"
+              >
+                {item}
+              </button>
+            ))}
+
+            <button
+              type="button"
+              className="menu-link promo-link"
+            >
               Shop deals with no order minimum
             </button>
           </div>
@@ -600,7 +763,11 @@ function App() {
       <main className="page-content">
         <section className="hero-panel">
           <div className="hero-visual">
-            <img src={heroSlides[0].image} alt={heroSlides[0].title} />
+            <img
+              src={heroSlides[0].image}
+              alt={heroSlides[0].title}
+            />
+
             <div className="hero-copy">
               <span>{heroSlides[0].tag}</span>
               <h1>{heroSlides[0].title}</h1>
@@ -611,13 +778,29 @@ function App() {
           <div className="mini-panels">
             <article className="info-card">
               <h3>Welcome back</h3>
-              <p>{signedIn ? 'Your Prime benefits are ready.' : 'Sign in for faster checkout.'}</p>
-              <button type="button" className="primary-button" onClick={() => openAuth(signedIn ? 'account' : 'signin')}>
-                {signedIn ? 'Manage account' : 'Sign in securely'}
+
+              <p>
+                {signedIn
+                  ? 'Your Prime benefits are ready.'
+                  : 'Sign in for faster checkout.'}
+              </p>
+
+              <button
+                type="button"
+                className="primary-button"
+                onClick={() =>
+                  openAuth(signedIn ? 'account' : 'signin')
+                }
+              >
+                {signedIn
+                  ? 'Manage account'
+                  : 'Sign in securely'}
               </button>
             </article>
+
             <article className="info-card">
               <h3>Frequently repurchased</h3>
+
               <ul>
                 <li>Cleaning essentials</li>
                 <li>Office must-haves</li>
@@ -633,7 +816,9 @@ function App() {
               key={slide.title}
               type="button"
               className="feature-tile"
-              onClick={() => setSelectedProduct(products[0])}
+              onClick={() =>
+                setSelectedProduct(products[0])
+              }
             >
               <span>{slide.tag}</span>
               <strong>{slide.title}</strong>
@@ -646,12 +831,17 @@ function App() {
             <h2>Shop by Department</h2>
             <button type="button">See all</button>
           </div>
+
           <div className="category-grid">
             {categories.map((category) => (
               <button
                 key={category}
                 type="button"
-                className={category === activeCategory ? 'category-pill active' : 'category-pill'}
+                className={
+                  category === activeCategory
+                    ? 'category-pill active'
+                    : 'category-pill'
+                }
                 onClick={() => {
                   setActiveCategory(category)
                   setSearchTerm('')
@@ -668,41 +858,92 @@ function App() {
             <h2>{activeCategory}</h2>
             <button type="button">More items</button>
           </div>
+
           <div className="product-grid">
             {activeProducts.map((product) => (
-              <article key={product.id} className="product-card">
+              <article
+                key={product.id}
+                className="product-card"
+              >
                 <div className="image-wrap">
-                  <img src={product.image} alt={product.title} />
+                  <img
+                    src={product.image}
+                    alt={product.title}
+                  />
                 </div>
+
                 <div className="card-body">
-                  <span className="badge">{product.badge}</span>
+                  <span className="badge">
+                    {product.badge}
+                  </span>
+
                   <h3>{product.title}</h3>
+
                   <div className="rating-row">
                     <span>★★★★★</span>
-                    <small>{product.rating} ({product.reviews})</small>
+                    <small>
+                      {product.rating} ({product.reviews})
+                    </small>
                   </div>
+
                   <div className="price-row">
-                    <strong>{formatCurrency(product.price)}</strong>
-                    <span>{formatCurrency(product.oldPrice)}</span>
+                    <strong>
+                      {formatCurrency(product.price)}
+                    </strong>
+
+                    <span>
+                      {formatCurrency(product.oldPrice)}
+                    </span>
                   </div>
+
                   <div className="mini-total-row">
-                    <span>In cart: {getCartQuantity(product.id)}</span>
-                    <strong>{formatCurrency(product.price * getCartQuantity(product.id))}</strong>
+                    <span>
+                      In cart: {getCartQuantity(product.id)}
+                    </span>
+
+                    <strong>
+                      {formatCurrency(
+                        product.price *
+                          getCartQuantity(product.id),
+                      )}
+                    </strong>
                   </div>
+
                   <div className="card-actions">
-                    <button type="button" className="secondary-button" onClick={() => setSelectedProduct(product)}>
+                    <button
+                      type="button"
+                      className="secondary-button"
+                      onClick={() =>
+                        setSelectedProduct(product)
+                      }
+                    >
                       Details
                     </button>
-                    <button type="button" className="primary-button" onClick={() => addToCart(product)}>
+
+                    <button
+                      type="button"
+                      className="primary-button"
+                      onClick={() => addToCart(product)}
+                    >
                       Add to cart
                     </button>
                   </div>
                 </div>
+
                 <div className="cart-totals">
-                  <span className="item-price">{formatCurrency(product.price)}</span>
-                  <span className="item-qty">Qty: {getCartQuantity(product.id)}</span>
+                  <span className="item-price">
+                    {formatCurrency(product.price)}
+                  </span>
+
+                  <span className="item-qty">
+                    Qty: {getCartQuantity(product.id)}
+                  </span>
+
                   <span className="item-total">
-                    {formatCurrency(product.price * getCartQuantity(product.id))}
+                    {formatCurrency(
+                      product.price *
+                        getCartQuantity(product.id),
+                    )}
                   </span>
                 </div>
               </article>
@@ -715,13 +956,27 @@ function App() {
             <h2>Recently viewed</h2>
             <button type="button">Keep shopping</button>
           </div>
+
           <div className="mini-grid">
             {products.slice(0, 4).map((product) => (
-              <button key={product.id} type="button" className="mini-card" onClick={() => setSelectedProduct(product)}>
-                <img src={product.image} alt={product.title} />
+              <button
+                key={product.id}
+                type="button"
+                className="mini-card"
+                onClick={() =>
+                  setSelectedProduct(product)
+                }
+              >
+                <img
+                  src={product.image}
+                  alt={product.title}
+                />
+
                 <div>
                   <strong>{product.title}</strong>
-                  <span>{formatCurrency(product.price)}</span>
+                  <span>
+                    {formatCurrency(product.price)}
+                  </span>
                 </div>
               </button>
             ))}
@@ -730,34 +985,85 @@ function App() {
       </main>
 
       {selectedProduct && (
-        <div className="detail-modal" onClick={() => setSelectedProduct(null)}>
-          <div className="detail-card" onClick={(event) => event.stopPropagation()}>
-            <button type="button" className="close-button" onClick={() => setSelectedProduct(null)}>
+        <div
+          className="detail-modal"
+          onClick={() => setSelectedProduct(null)}
+        >
+          <div
+            className="detail-card"
+            onClick={(event) =>
+              event.stopPropagation()
+            }
+          >
+            <button
+              type="button"
+              className="close-button"
+              onClick={() => setSelectedProduct(null)}
+            >
               ×
             </button>
+
             <div className="detail-media">
-              <img src={selectedProduct.image} alt={selectedProduct.title} />
+              <img
+                src={selectedProduct.image}
+                alt={selectedProduct.title}
+              />
             </div>
+
             <div className="detail-copy">
-              <span className="badge">{selectedProduct.badge}</span>
+              <span className="badge">
+                {selectedProduct.badge}
+              </span>
+
               <h3>{selectedProduct.title}</h3>
+
               <div className="rating-row">
                 <span>★★★★★</span>
-                <small>{selectedProduct.rating} ({selectedProduct.reviews} reviews)</small>
+                <small>
+                  {selectedProduct.rating} (
+                  {selectedProduct.reviews} reviews)
+                </small>
               </div>
+
               <div className="price-row">
-                <strong>{formatCurrency(selectedProduct.price)}</strong>
-                <span>{formatCurrency(selectedProduct.oldPrice)}</span>
+                <strong>
+                  {formatCurrency(
+                    selectedProduct.price,
+                  )}
+                </strong>
+
+                <span>
+                  {formatCurrency(
+                    selectedProduct.oldPrice,
+                  )}
+                </span>
               </div>
+
               <p>
-                Designed to make your routine smoother with premium performance, durable build,
-                and fast delivery essentials you’ll actually enjoy keeping around.
+                Designed to make your routine smoother
+                with premium performance, durable build,
+                and fast delivery essentials you’ll
+                actually enjoy keeping around.
               </p>
+
               <div className="detail-actions">
-                <button type="button" className="primary-button" onClick={() => addToCart(selectedProduct)}>
+                <button
+                  type="button"
+                  className="primary-button"
+                  onClick={() =>
+                    addToCart(selectedProduct)
+                  }
+                >
                   Add to cart
                 </button>
-                <button type="button" className="secondary-button" onClick={() => setSelectedProduct(null)}>
+
+                <button
+                  type="button"
+                  className="secondary-button"
+                  onClick={() =>
+                    setSelectedProduct(null)
+                  }
+                >
                   Keep browsing
                 </button>
               </div>
@@ -767,11 +1073,26 @@ function App() {
       )}
 
       {authOpen && (
-        <div className="auth-modal" onClick={() => setAuthOpen(false)}>
-          <div className="auth-card" onClick={(event) => event.stopPropagation()}>
+        <div
+          className="auth-modal"
+          onClick={() => setAuthOpen(false)}
+        >
+          <div
+            className="auth-card"
+            onClick={(event) =>
+              event.stopPropagation()
+            }
+          >
             <div className="auth-header">
-              <div className="brand-logo inline">amazon</div>
-              <button type="button" className="close-button" onClick={() => setAuthOpen(false)}>
+              <div className="brand-logo inline">
+                amazon
+              </div>
+
+              <button
+                type="button"
+                className="close-button"
+                onClick={() => setAuthOpen(false)}
+              >
                 ×
               </button>
             </div>
@@ -779,72 +1100,142 @@ function App() {
             {authMode === 'account' && (
               <div className="account-panel">
                 <h3>Account</h3>
+
                 <p>Signed in as {userName}</p>
-                <button type="button" className="primary-button full-width" onClick={() => setAuthMode('changepassword')}>
+
+                <button
+                  type="button"
+                  className="primary-button full-width"
+                  onClick={() =>
+                    setAuthMode('changepassword')
+                  }
+                >
                   Change password
                 </button>
-                <button type="button" className="secondary-button full-width" onClick={handleSignOut}>
+
+                <button
+                  type="button"
+                  className="secondary-button full-width"
+                  onClick={handleSignOut}
+                >
                   Sign out
                 </button>
               </div>
             )}
 
             {authMode === 'changepassword' && (
-              <form onSubmit={handleSubmitAuth} className="auth-form">
+              <form
+                onSubmit={handleSubmitAuth}
+                className="auth-form"
+              >
                 <h3>Change password</h3>
+
                 <label>
                   Current password
-                  <input type="password" defaultValue="amazon123" />
+                  <input
+                    type="password"
+                    defaultValue="amazon123"
+                  />
                 </label>
+
                 <label>
                   New password
-                  <input type="password" defaultValue="newsecurepass" />
+                  <input
+                    type="password"
+                    defaultValue="newsecurepass"
+                  />
                 </label>
-                <button type="submit" className="primary-button full-width">
+
+                <button
+                  type="submit"
+                  className="primary-button full-width"
+                >
                   Update password
                 </button>
-                <button type="button" className="secondary-button full-width" onClick={() => setAuthMode('account')}>
+
+                <button
+                  type="button"
+                  className="secondary-button full-width"
+                  onClick={() =>
+                    setAuthMode('account')
+                  }
+                >
                   Back to account
                 </button>
               </form>
             )}
 
-            {!['account', 'changepassword'].includes(authMode) && (
+            {!['account', 'changepassword'].includes(
+              authMode,
+            ) && (
               <>
                 <div className="auth-switch">
                   <button
                     type="button"
-                    className={authMode === 'signin' ? 'active' : ''}
-                    onClick={() => setAuthMode('signin')}
+                    className={
+                      authMode === 'signin'
+                        ? 'active'
+                        : ''
+                    }
+                    onClick={() =>
+                      setAuthMode('signin')
+                    }
                   >
                     Sign in
                   </button>
+
                   <button
                     type="button"
-                    className={authMode === 'signup' ? 'active' : ''}
-                    onClick={() => setAuthMode('signup')}
+                    className={
+                      authMode === 'signup'
+                        ? 'active'
+                        : ''
+                    }
+                    onClick={() =>
+                      setAuthMode('signup')
+                    }
                   >
                     Create account
                   </button>
                 </div>
 
-                <form onSubmit={handleSubmitAuth} className="auth-form">
+                <form
+                  onSubmit={handleSubmitAuth}
+                  className="auth-form"
+                >
                   <label>
                     Email or mobile number
-                    <input type="text" defaultValue="sarah@amazon-demo.com" />
+                    <input
+                      type="text"
+                      defaultValue="sarah@amazon-demo.com"
+                    />
                   </label>
+
                   <label>
                     Password
-                    <input type="password" defaultValue="amazon123" />
+                    <input
+                      type="password"
+                      defaultValue="amazon123"
+                    />
                   </label>
+
                   {authMode === 'signup' && (
                     <label>
                       Full name
-                      <input type="text" defaultValue="Sarah Smith" />
+                      <input
+                        type="text"
+                        defaultValue="Sarah Smith"
+                      />
                     </label>
                   )}
-                  <button type="submit" className="primary-button full-width">
-                    {authMode === 'signin' ? 'Sign in' : 'Create account'}
+
+                  <button
+                    type="submit"
+                    className="primary-button full-width"
+                  >
+                    {authMode === 'signin'
+                      ? 'Sign in'
+                      : 'Create account'}
                   </button>
                 </form>
               </>
@@ -855,7 +1246,9 @@ function App() {
     </div>
   )
 
-  return isCartPage ? renderCartPage() : renderHomePage()
+  return isCartPage
+    ? renderCartPage()
+    : renderHomePage()
 }
 
 export default App
