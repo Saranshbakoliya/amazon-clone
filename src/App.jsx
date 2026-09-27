@@ -146,18 +146,18 @@ const products = [
     image:
       'https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&w=900&q=80',
   },
-  {
-    id: 10,
-    title: 'Google Pixel 8 Pro',
-    category: 'Electronics',
-    rating: 4.8,
-    reviews: 18934,
-    price: 999.99,
-    oldPrice: 1099.99,
-    badge: 'Best seller',
-    image:
-      'https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&w=900&q=80',
-  },
+ {
+  id: 10,
+  title: 'Google Pixel 8 Pro',
+  category: 'Electronics',
+  rating: 4.8,
+  reviews: 18934,
+  price: 999.99,
+  oldPrice: 1099.99,
+  badge: 'Best seller',
+  image:
+    'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?auto=format&fit=crop&w=900&q=80',
+},
   {
     id: 11,
     title: 'MacBook Pro 16" M3 Max',
